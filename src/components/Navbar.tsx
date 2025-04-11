@@ -7,11 +7,13 @@ import { Button } from '@/components/ui/button';
 import { useAuthContext } from '@/contexts/AuthContext';
 import LoginModal from '@/components/LoginModal';
 import { useTheme } from '@/contexts/ThemeContext';
+import ContactModal from '@/components/ContactModal';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuthContext();
@@ -43,6 +45,10 @@ const Navbar = () => {
     } else {
       setShowLoginModal(true);
     }
+  };
+
+  const handleContactClick = () => {
+    setShowContactModal(true);
   };
   
   return (
@@ -107,6 +113,14 @@ const Navbar = () => {
             >
               {isAuthenticated ? user?.name || 'Dashboard' : 'Get Started'}
             </Button>
+
+            <Button
+              variant="ghost"
+              className="text-gray-300 hover:text-white"
+              onClick={handleContactClick}
+            >
+              Contact Us
+            </Button>
           </div>
           
           {/* Mobile Menu Button */}
@@ -163,14 +177,33 @@ const Navbar = () => {
               >
                 {isAuthenticated ? user?.name || 'Dashboard' : 'Get Started'}
               </Button>
+
+              <Button
+                variant="ghost"
+                className="text-gray-300 hover:text-white animate-fade-in animate-delay-500"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleContactClick();
+                }}
+              >
+                Contact Us
+              </Button>
             </div>
           </div>
         )}
       </nav>
       
-      {showLoginModal && (
-        <LoginModal onClose={() => setShowLoginModal(false)} />
-      )}
+      <AnimatePresence>
+        {showLoginModal && (
+          <LoginModal onClose={() => setShowLoginModal(false)} />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showContactModal && (
+          <ContactModal onClose={() => setShowContactModal(false)} />
+        )}
+      </AnimatePresence>
     </>
   );
 };
