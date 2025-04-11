@@ -1,73 +1,45 @@
-# Welcome to your Lovable project
 
-## Project info
+# FactFusion
 
-**URL**: https://lovable.dev/projects/894d0896-a8b6-4739-b1c5-b293a657573c
+FactFusion is an AI-powered fact-checking platform that allows users to analyze text, images, audio, and video content for factual accuracy.
 
-## How can I edit this code?
+## Key Features
 
-There are several ways of editing your application.
+- **User Authentication**: Secure login and registration system
+- **Content Analysis**: Support for multiple content types
+  - Text files (TXT, DOC, DOCX, PDF, RTF)
+  - Image files (JPG, PNG, GIF, WEBP)
+  - Audio files (MP3, WAV, OGG, M4A)
+  - Video files (MP4, MOV, AVI, WEBM)
+- **Interactive UI**: Rich animations and intuitive user interface
+- **Analysis Results**: Detailed reports with trust scores
+- **Export Options**: Download analysis reports in different formats
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/894d0896-a8b6-4739-b1c5-b293a657573c) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
 - React
-- shadcn-ui
+- TypeScript
 - Tailwind CSS
+- Framer Motion (for animations)
+- Shadcn UI components
+- React Router
+- React Query
 
-## How can I deploy this project?
+## Getting Started
 
-Simply open [Lovable](https://lovable.dev/projects/894d0896-a8b6-4739-b1c5-b293a657573c) and click on Share -> Publish.
+1. Clone the repository
+2. Install dependencies with `npm install`
+3. Run the development server with `npm run dev`
+4. Open your browser and navigate to `http://localhost:5173`
 
-## Can I connect a custom domain to my Lovable project?
+## Project Structure
 
-Yes it is!
+- `/src/components`: Reusable UI components
+- `/src/contexts`: Context providers (e.g., authentication)
+- `/src/pages`: Main application pages
+- `/src/hooks`: Custom React hooks
+- `/public`: Static assets
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Notes
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This application uses localStorage for demonstration purposes. In a production environment, it would connect to a proper backend service for user authentication and data storage.

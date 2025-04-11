@@ -81,6 +81,55 @@
   .animate-delay-500 {
     animation-delay: 500ms;
   }
+
+  /* 3D button effect */
+  .button-3d {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .button-3d:hover {
+    transform: translateY(-3px) translateZ(10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .button-3d:active {
+    transform: translateY(0) translateZ(5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Glowing hover effect */
+  .glow-on-hover {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .glow-on-hover::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border-radius: inherit;
+    background: linear-gradient(45deg, #8B5CF6, #0EA5E9);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .glow-on-hover:hover::after {
+    opacity: 0.6;
+    filter: blur(15px);
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.6; filter: blur(15px); }
+    50% { opacity: 0.3; filter: blur(20px); }
+    100% { opacity: 0.6; filter: blur(15px); }
+  }
 }
 
 .flip-card {
@@ -154,5 +203,49 @@
   to {
     transform: scale(4);
     opacity: 0;
+  }
+}
+
+/* Typing cursor animation */
+.typing-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background-color: currentColor;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Color changing animation */
+.color-shift {
+  animation: colorShift 6s infinite alternate;
+}
+
+@keyframes colorShift {
+  0% { color: #8B5CF6; }
+  50% { color: #0EA5E9; }
+  100% { color: #8B5CF6; }
+}
+
+/* 3D floating animation */
+.float-3d {
+  animation: float 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) translateZ(0) rotateX(0) rotateY(0);
+  }
+  50% {
+    transform: translateY(-10px) translateZ(10px) rotateX(5deg) rotateY(5deg);
+  }
+  100% {
+    transform: translateY(0px) translateZ(0) rotateX(0) rotateY(0);
   }
 }
