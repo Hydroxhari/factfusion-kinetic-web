@@ -1,25 +1,42 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Bell, BarChart2, Settings, ChevronDown, Filter, Calendar, Download, Clock } from 'lucide-react';
+import { Search, BarChart2, Settings, ChevronDown, Filter, Calendar, Download, Clock, Users, Phone } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import DashboardTabs from '@/components/DashboardTabs';
 import FooterSection from '@/components/FooterSection';
 import LoadingScreen from '@/components/LoadingScreen';
+import ContactModal from '@/components/ContactModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '@/contexts/AuthContext';
+import { toast } from '@/components/ui/use-toast';
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [showContactModal, setShowContactModal] = useState(false);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuthContext();
   
   useEffect(() => {
+    // Redirect if not authenticated
+    if (!isAuthenticated) {
+      navigate('/');
+      toast({
+        title: "Authentication required",
+        description: "Please log in to access the dashboard",
+        variant: "destructive"
+      });
+    }
+    
     // Shorter loading time for internal pages
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1500);
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [isAuthenticated, navigate]);
   
   const recentAnalyses = [
     {
@@ -49,6 +66,44 @@ const Dashboard = () => {
     if (score >= 80) return "bg-green-500";
     if (score >= 60) return "bg-yellow-400";
     return "bg-red-500";
+  };
+  
+  const handleDownload = () => {
+    // Create a sample file to download
+    const content = {
+      report: "FactFusion Analysis Report",
+      date: new Date().toISOString(),
+      results: {
+        trustScore: 78,
+        sources: 12,
+        claims: 8,
+        verified: 6,
+        unverified: 2
+      }
+    };
+    
+    const blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'factfusion-analysis-report.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Download started",
+      description: "Your analysis report is being downloaded"
+    });
+  };
+  
+  const handleViewOpenPosition = () => {
+    navigate('/about');
+    toast({
+      title: "Careers",
+      description: "View our open positions on the About page"
+    });
   };
   
   return (
@@ -101,9 +156,47 @@ const Dashboard = () => {
                         </motion.div>
                       ))}
                     </div>
-                    <Button variant="ghost" className="w-full mt-3 text-sm text-purpleAccent">
+                    <Button 
+                      variant="ghost" 
+                      className="w-full mt-3 text-sm text-purpleAccent"
+                      onClick={() => {
+                        toast({
+                          title: "All analyses",
+                          description: "Viewing all your past analyses"
+                        });
+                      }}
+                    >
                       View All
                     </Button>
+                  </div>
+                  
+                  <div className="glass-card rounded-xl p-5 mb-6">
+                    <h3 className="font-medium mb-4">Actions</h3>
+                    <div className="space-y-3">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start border-brand-700 bg-transparent hover:bg-brand-800"
+                        onClick={handleDownload}
+                      >
+                        <Download className="w-4 h-4 mr-2" /> Download Report
+                      </Button>
+                      
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start border-brand-700 bg-transparent hover:bg-brand-800"
+                        onClick={handleViewOpenPosition}
+                      >
+                        <Users className="w-4 h-4 mr-2" /> View Open Positions
+                      </Button>
+                      
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start border-brand-700 bg-transparent hover:bg-brand-800"
+                        onClick={() => setShowContactModal(true)}
+                      >
+                        <Phone className="w-4 h-4 mr-2" /> Contact Us
+                      </Button>
+                    </div>
                   </div>
                   
                   <div className="glass-card rounded-xl p-5">
@@ -159,10 +252,17 @@ const Dashboard = () => {
                     </div>
                     
                     <div className="flex space-x-3">
-                      <Button variant="outline" className="border-brand-700 bg-transparent">
+                      <Button 
+                        variant="outline" 
+                        className="border-brand-700 bg-transparent"
+                        onClick={handleDownload}
+                      >
                         <Download className="w-4 h-4 mr-2" /> Export
                       </Button>
-                      <Button className="bg-gradient-to-r from-purpleAccent to-blueAccent">
+                      <Button 
+                        className="bg-gradient-to-r from-purpleAccent to-blueAccent"
+                        onClick={() => navigate('/analysis')}
+                      >
                         New Analysis
                       </Button>
                     </div>
@@ -223,6 +323,10 @@ const Dashboard = () => {
           </main>
           
           <FooterSection />
+          
+          {showContactModal && (
+            <ContactModal onClose={() => setShowContactModal(false)} />
+          )}
         </div>
       )}
     </>

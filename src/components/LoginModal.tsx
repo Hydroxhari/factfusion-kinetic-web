@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, User, Mail, Lock, Loader } from 'lucide-react';
+import { X, User, Mail, Lock, Loader, Info } from 'lucide-react';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -18,6 +18,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showDefaultCredentials, setShowDefaultCredentials] = useState(false);
   
   const { login, register } = useAuthContext();
   
@@ -53,6 +54,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
     }
     
     setIsProcessing(false);
+  };
+  
+  const useDefaultCredentials = () => {
+    setEmail('admin@gmail.com');
+    setPassword('admin');
+    if (isRegistering) {
+      setName('admin');
+    }
   };
   
   return (
@@ -157,6 +166,32 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
                 </div>
               </div>
               
+              {showDefaultCredentials && (
+                <motion.div
+                  className="mt-4 p-3 bg-brand-800/80 rounded-lg text-sm"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                >
+                  <div className="flex items-start gap-2">
+                    <Info className="w-4 h-4 text-purpleAccent flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-white font-medium">Default Credentials:</p>
+                      <p className="text-gray-300">Email: admin@gmail.com</p>
+                      <p className="text-gray-300">Password: admin</p>
+                      <p className="text-gray-300">Username: admin</p>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="mt-2 text-xs text-purpleAccent hover:text-white p-0"
+                        onClick={useDefaultCredentials}
+                      >
+                        Use these credentials
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+              
               <motion.div
                 className="pt-2"
                 whileHover={{ scale: 1.02 }}
@@ -177,6 +212,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
           </form>
           
           <div className="mt-6 text-center">
+            <div className="mb-3">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-xs text-gray-400 hover:text-white"
+                onClick={() => setShowDefaultCredentials(!showDefaultCredentials)}
+              >
+                {showDefaultCredentials ? "Hide default credentials" : "Show default credentials"}
+              </Button>
+            </div>
             <p className="text-gray-400">
               {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
               <button

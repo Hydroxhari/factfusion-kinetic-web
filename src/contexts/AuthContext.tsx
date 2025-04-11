@@ -44,11 +44,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  // Mock login function (in real app, this would call an API)
+  // Login function with default credentials support
   const login = async (email: string, password: string) => {
     // Simulate API call
     try {
-      // For demo purposes, accept any email/password combo with basic validation
+      // Check for default admin credentials
+      if (email === 'admin@gmail.com' && password === 'admin') {
+        const adminUser = {
+          id: 'admin_user',
+          name: 'admin',
+          email: 'admin@gmail.com'
+        };
+        
+        localStorage.setItem('factfusion_user', JSON.stringify(adminUser));
+        setUser(adminUser);
+        setIsAuthenticated(true);
+        
+        toast({
+          title: "Login successful",
+          description: "Welcome back, admin!",
+        });
+        
+        return true;
+      }
+      
+      // For other credentials, basic validation
       if (!email.includes('@') || password.length < 6) {
         toast({
           title: "Invalid credentials",
@@ -88,10 +108,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
   
-  // Mock register function
+  // Register function
   const register = async (name: string, email: string, password: string) => {
     // Simulate API call
     try {
+      // Check for admin email to prevent duplicates
+      if (email === 'admin@gmail.com') {
+        toast({
+          title: "Registration failed",
+          description: "This email is already in use",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
       // Basic validation
       if (!name || !email.includes('@') || password.length < 6) {
         toast({
