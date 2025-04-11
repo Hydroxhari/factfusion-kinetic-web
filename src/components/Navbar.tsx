@@ -9,6 +9,7 @@ import { useAuthContext } from '@/contexts/AuthContext';
 import LoginModal from '@/components/LoginModal';
 import { useTheme } from '@/contexts/ThemeContext';
 import ContactModal from '@/components/ContactModal';
+import { Switch } from '@/components/ui/switch';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -95,18 +96,20 @@ const Navbar = () => {
               </Link>
             ))}
             
-            <Button 
-              onClick={toggleTheme}
-              variant="ghost"
-              className="p-2 text-gray-300 hover:text-white"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
+            <div className="flex items-center space-x-2">
+              <span className="text-xs text-gray-400">{theme === 'dark' ? 'Dark' : 'Light'}</span>
+              <Switch 
+                checked={theme === 'light'}
+                onCheckedChange={toggleTheme}
+                className="data-[state=checked]:bg-purpleAccent"
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              />
               {theme === 'dark' ? (
-                <Sun className="w-5 h-5" />
+                <Moon className="w-4 h-4 text-gray-400" />
               ) : (
-                <Moon className="w-5 h-5" />
+                <Sun className="w-4 h-4 text-yellow-400" />
               )}
-            </Button>
+            </div>
             
             <Button 
               className="bg-gradient-to-r from-purpleAccent to-blueAccent hover:opacity-90 ripple-btn"
@@ -126,18 +129,20 @@ const Navbar = () => {
           
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
-            <Button 
-              onClick={toggleTheme}
-              variant="ghost"
-              className="p-2 text-gray-300 hover:text-white"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
+            <div className="flex items-center space-x-1">
+              <Switch 
+                checked={theme === 'light'}
+                onCheckedChange={toggleTheme}
+                size="sm"
+                className="data-[state=checked]:bg-purpleAccent"
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              />
               {theme === 'dark' ? (
-                <Sun className="w-5 h-5" />
+                <Moon className="w-4 h-4 text-gray-400" />
               ) : (
-                <Moon className="w-5 h-5" />
+                <Sun className="w-4 h-4 text-yellow-400" />
               )}
-            </Button>
+            </div>
             
             <button className="p-2" onClick={toggleMobileMenu}>
               {mobileMenuOpen ? (
